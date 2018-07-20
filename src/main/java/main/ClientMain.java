@@ -6,6 +6,7 @@ import com.jme3.asset.AssetKey;
 import com.jme3.asset.plugins.ClasspathLocator;
 import com.jme3.font.BitmapText;
 import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.input.event.MouseMotionEvent;
 import com.jme3.material.Material;
 
 import com.jme3.math.Vector2f;
@@ -30,11 +31,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 
 
+import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 import utils.CreateGeoms;
 import utils.Grid;
+import utils.UI;
 import utils.UtNetworking;
 import utils.UtNetworking.NetworkMessage;
 import utils.UtNetworking.PositionMessage;
@@ -54,7 +57,7 @@ public class ClientMain extends SimpleApplication {
     private Grid grid;
     private Spatial[][] cells;
     private boolean gridON;
-
+    private UI userUI;
 
     public int winCount = 0;
     private Screen screen;
@@ -126,29 +129,8 @@ public class ClientMain extends SimpleApplication {
         renderSky();
         attachCoordinateAxes(new Vector3f(0f,0f,0f));
 
-        screen = new Screen(this , "tonegod/gui/style/def/style_map.gui.xml");
-        //screen = new Screen(this );
-        guiNode.addControl(screen);
-
-        // Добавить окно
-        Window win = new Window(screen, "win", new Vector2f(15, 15));
-
-        // Создать кнопку и добавить в окно
-        ButtonAdapter makeWindow = new ButtonAdapter( screen,  "Btn1", new Vector2f(15, 55) ) {
-            @Override
-            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
-                createNewWindow(" New Window" + winCount);
-            }
-        };
-        makeWindow.setText("New Window");
-        win.setWindowTitle("OLOLO");
-        win.setUseCloseButton(true);
-        // Добавим её в наше начальное окно
-        win.addChild(makeWindow);
-
-        // Добавить окно на экран
-        screen.addElement(win);
-
+        UI userUI = new UI(this);
+        guiNode.addControl(userUI.getScreen());
        // guiNode.attachChild(helloText);
 
     }
