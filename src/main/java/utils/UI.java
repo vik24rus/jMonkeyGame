@@ -4,6 +4,8 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.input.event.MouseMotionEvent;
 import com.jme3.math.Vector2f;
+import com.sun.istack.internal.logging.Logger;
+import main.ClientMain;
 import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Window;
@@ -12,6 +14,7 @@ import tonegod.gui.core.Screen;
 
 public class UI {
     private Screen screen;
+    private final Logger log = Logger.getLogger(UI.class.getClass());
 
     public UI(SimpleApplication simpleApplication){
         screen = new Screen(simpleApplication , "tonegod/gui/style/def/style_map.gui.xml");

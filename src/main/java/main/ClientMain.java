@@ -1,5 +1,7 @@
 package main;
 
+import AppStates.GridAppState;
+import AppStates.UIAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetInfo;
 import com.jme3.asset.AssetKey;
@@ -21,6 +23,7 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.debug.Arrow;
 
+import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
 import com.jme3.util.SkyFactory;
 import com.sun.istack.internal.logging.Logger;
@@ -49,6 +52,7 @@ import utils.UtNetworking.PositionMessage;
 public class ClientMain extends SimpleApplication {
 
     private Client client;
+    private final Logger log = Logger.getLogger(ClientMain.class.getClass());
     private ConcurrentLinkedQueue<String> messageQueue;
     private Geometry geom;
     private BitmapText helloText;
@@ -63,8 +67,11 @@ public class ClientMain extends SimpleApplication {
     private Screen screen;
     public static void main(String[] args){
         UtNetworking.initialiseSerializables();
-
         ClientMain app = new ClientMain();
+        AppSettings settings = new AppSettings(true);
+        settings.setTitle("jMonkey 3.2");
+        //settings.setSettingsDialogImage("Interface/logic-excavator.png");
+        app.setSettings(settings);
         app.setShowSettings(false);
         app.start();
     }
@@ -86,6 +93,20 @@ public class ClientMain extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+        //setDisplayFps(false);
+        //setDisplayStatView(false);
+        //flyCam.setEnabled(true);
+        //inputManager.setCursorVisible(false);
+        //JmeCursor jc = (JmeCursor) assetManager.loadAsset("Interface/Nifty/resources/cursorPointing.cur");
+        // inputManager.setMouseCursor(jc);
+
+        GridAppState gridAppState = new GridAppState();
+        UIAppState uiAppState = new UIAppState();
+        stateManager.attach(gridAppState);
+        stateManager.attach(uiAppState);
+        //stateManager.detach(uiAppState);
+
+
         try{
             client = Network.connectToServer("127.0.0.1", UtNetworking.PORT);
             client.start();
@@ -93,13 +114,12 @@ public class ClientMain extends SimpleApplication {
             Logger.getLogger(ClientMain.class.getClass()).log(Level.SEVERE,null,ex);
         }
 
-        geom = new CreateGeoms(this).createBox();
-        rootNode.attachChild(geom);
+        //geom = new CreateGeoms(this).createBox();
+        //rootNode.attachChild(geom);
 
         messageQueue = new ConcurrentLinkedQueue<String>() ;
         client.addMessageListener(new NetworkMessageListener());
-        flyCam.setEnabled(false);
-        inputManager.setCursorVisible(false);
+
         this.setPauseOnLostFocus(false);
 //        inputManager.addMapping("left", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
 //        inputManager.addListener (new ActionListener() {
@@ -124,18 +144,18 @@ public class ClientMain extends SimpleApplication {
 //        helloText.setText(" f");
 //        helloText.setLocalTranslation(300,300 +  helloText.getLineHeight(), 0);
 
-        gridON = true;
-        renderGrid();
+        //if (gridON) {
+            //renderGrid();
+        //}
         renderSky();
         attachCoordinateAxes(new Vector3f(0f,0f,0f));
 
-        UI userUI = new UI(this);
-        guiNode.addControl(userUI.getScreen());
+        //UI userUI = new UI(this);
+        //guiNode.addControl(userUI.getScreen());
        // guiNode.attachChild(helloText);
 
     }
     public void renderGrid(){
-        if (gridON){
             gridY = 10;
             gridX = 10;
             grid = new Grid(gridY , gridX, this);
@@ -148,7 +168,6 @@ public class ClientMain extends SimpleApplication {
                     rootNode.attachChild(cells[i][j]);
                 }
             }
-        }
     }
 
     private void attachCoordinateAxes(Vector3f pos)
@@ -253,7 +272,7 @@ public class ClientMain extends SimpleApplication {
                 {
                     public Object call() throws Exception
                     {
-                        geom.setLocalTranslation(positionMessage.GetPosition());
+                        //geom.setLocalTranslation(positionMessage.GetPosition());
                         return null;
                     }
 
