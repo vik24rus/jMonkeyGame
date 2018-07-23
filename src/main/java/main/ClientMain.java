@@ -26,6 +26,8 @@ import com.jme3.scene.debug.Arrow;
 import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
 import com.jme3.util.SkyFactory;
+import com.simsilica.lemur.*;
+import com.simsilica.lemur.style.BaseStyles;
 import com.sun.istack.internal.logging.Logger;
 
 import java.io.IOException;
@@ -44,7 +46,6 @@ import utils.UI;
 import utils.UtNetworking;
 import utils.UtNetworking.NetworkMessage;
 import utils.UtNetworking.PositionMessage;
-
 //import java.util.logging.Logger;
 
 
@@ -99,6 +100,31 @@ public class ClientMain extends SimpleApplication {
         //inputManager.setCursorVisible(false);
         //JmeCursor jc = (JmeCursor) assetManager.loadAsset("Interface/Nifty/resources/cursorPointing.cur");
         // inputManager.setMouseCursor(jc);
+
+        //GuiGlobals.initialize(this);
+        //BaseStyles.loadGlassStyle();
+        //GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+
+        // Создайте простой контейнер для наших элементов
+//        Container myWindow = new Container();
+//        guiNode.attachChild(myWindow);
+
+        // Поместите его куда-нибудь, чтобы мы его увидели.
+        // Примечание. Элементы GUI Lemur прирастают из левого верхнего угла.
+        //myWindow.setLocalTranslation(300, 300, 0);
+
+        // Добавим некоторые элементы
+        //myWindow.addChild(new Label("Hello, World."));
+
+//        Button clickMe = myWindow.addChild(new Button("Click Me"));
+//
+        //myWindow.addChild(new ActionButton(new CallMethodAction("Close", myWindow, "removeFromParent")));
+//        clickMe.addClickCommands(new Command<Button>() {
+//            @Override
+//            public void execute( Button source ) {
+//                System.out.println("The world is yours.");
+//            }
+//        });
 
         GridAppState gridAppState = new GridAppState();
         UIAppState uiAppState = new UIAppState();

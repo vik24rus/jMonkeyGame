@@ -28,6 +28,10 @@
             <id>jcenter</id>
             <url>http://jcenter.bintray.com</url>
         </repository>
+        <repository>
+            <id>mvnrepository</id>
+            <url>https://mvnrepository.com/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -57,6 +61,27 @@
             <artifactId>guava</artifactId>
             <version>23.6.1-jre</version>
         </dependency>
+        <dependency>
+            <groupId>com.simsilica</groupId>
+            <artifactId>lemur-proto</artifactId>
+            <version>1.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simsilica</groupId>
+            <artifactId>lemur</artifactId>
+            <version>1.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>
