@@ -2,34 +2,43 @@ package AppStates;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
-import com.jme3.scene.Geometry;
+import com.jme3.app.state.BaseAppState;
 import com.jme3.scene.Spatial;
-import utils.CreateGeoms;
 import utils.Grid;
 
-import java.util.logging.Logger;
-
-public class GridAppState extends AbstractAppState {
+public class GridAppState extends BaseAppState {
 
     private SimpleApplication app;
-    private final Logger log = Logger.getLogger(String.valueOf(GridAppState.class.getClass()));
-    private int gridY , gridX;
+    private int gridY = 10 , gridX = 10;
     private Grid grid;
     private Spatial[][] cells;
-    //private Node x = new Node("x");  // Некоторые поля пользовательских классов...
-    //public Node getX(){ return x; }  // Некоторые пользовательские методы...
-
     @Override
-    public void initialize(AppStateManager stateManager, Application app) {
-        super.initialize(stateManager, app);
-        this.app = (SimpleApplication)app;          // переход к более конкретному классу
-        gridY = 10;
-        gridX = 10;
+    protected void initialize(Application app) {
+        this.app = (SimpleApplication) app;
         grid = new Grid(gridY , gridX, this.app);
         cells = new Spatial[gridY][gridX];
         cells = grid.getGrid();
+        //Технически безопасно выполнять всю инициализацию и очистку в методах
+        //onEnable()/onDisable(). Выбор использовать initialize() и
+        //cleanup() для этого, это вопрос специфики производительности для
+        //разработчика.
+        //TODO: Инициализация AppState, например, присоединение spatials к rootNode
+    }
+
+    @Override
+    protected void cleanup(Application app) {
+        //TODO: очистить то, что вы инициализировали в методе initialize,
+        //например, удалить все spatials из rootNode
+    }
+
+    //onEnable()/onDisable() может использоваться для управления вещами, которые должны
+    //существовать только при включенном state. Основным примером были
+    //прикрепленный граф сцены или прикрепленный слушатель ввода.
+    @Override
+    protected void onEnable() {
+        //Вызывается, когда state полностью включено, то есть: установлено и
+        //isEnabled() является истинным или когда статус setEnabled() изменяется после
+        //прикрепления state.
         for (int i = 0; i < 10; i++) //_columnCount
         {
             for (int j = 0; j < 10; j++) //_rowCount
@@ -37,40 +46,27 @@ public class GridAppState extends AbstractAppState {
                 this.app.getRootNode().attachChild(cells[i][j]);
             }
         }
-        // инициализация, не зависящая от состояния: ПАУЗА или ВЫПОЛНЯЕТСЯ
-        //this.app.getRootNode().attachChild(getX()); // изменение графа сцены...
-        //this.app.doSomething();                     // вызов пользовательских методов...
+
     }
 
     @Override
-    public void cleanup() {
-        super.cleanup();
-        // Отменить регистрацию всех моих слушателей, отсоединить все мои узлы и.т.д.
-        //this.app.getRootNode().detachChild(getX()); // изменение графа сцены...
-        //this.app.doSomethingElse();                 // вызов пользовательских методов...
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        // Пауза и возобновление
-        super.setEnabled(enabled);
-        if(enabled){
-
-            // инициализация, которая используется, пока состояние ВЫПОЛНЯЕТСЯ
-            //this.app.getRootNode().attachChild(getX()); // изменение графа сцены...
-            //this.app.doSomethingElse();                 // вызов пользовательских методов...
-        } else {
-            // Убрать все, что не нужно, пока состояние ПАУЗА
-        //...
+    protected void onDisable() {
+        //Вызывается, когда state было ранее включено, но теперь отключено
+        //либо потому, что вызывается setEnabled (false), либо состояние
+        //очищается.
+        for (int i = 0; i < 10; i++) //_columnCount
+        {
+            for (int j = 0; j < 10; j++) //_rowCount
+            {
+                this.app.getRootNode().detachChild(cells[i][j]);
+            }
         }
+
     }
 
-    // Обратите внимание, что обновление вызывается только тогда, когда состояние подключено и включено.
     @Override
     public void update(float tpf) {
-        // В то время как игра ВЫПОЛНЯЕТСЯ
-        //this.app.getRootNode().getChild("blah").scale(tpf); // изменение графа сцены...
-        //x.setUserData(...);                                 // вызов пользовательских методов...
+        //TODO: реализовать поведение во время выполнения
     }
 
 }

@@ -2,19 +2,18 @@ package AppStates;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.scene.Spatial;
-import utils.Grid;
+import com.simsilica.lemur.Container;
 import utils.UI;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class UIAppState extends BaseAppState {
     private SimpleApplication app;
     private final Logger log = Logger.getLogger(String.valueOf(UIAppState.class.getClass()));
     private UI userUI;
+
     @Override
     protected void initialize(Application app) {
         this.app = (SimpleApplication) app;
@@ -40,8 +39,13 @@ public class UIAppState extends BaseAppState {
         //Вызывается, когда state полностью включено, то есть: установлено и
         //isEnabled() является истинным или когда статус setEnabled() изменяется после
         //прикрепления state.
+        ArrayList<Container> listUI ;
+        listUI = userUI.getListUI();
+        for (int i=0 ; i<listUI.size();i++){
+            app.getGuiNode().attachChild(listUI.get(i));
+        }
+        //app.getGuiNode().attachChild(userUI.getListUI());
 
-        app.getGuiNode().addControl(userUI.getScreen());
     }
 
     @Override
