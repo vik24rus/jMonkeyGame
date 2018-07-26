@@ -4,14 +4,14 @@ import com.jme3.math.Vector3f;
 import com.jme3.network.AbstractMessage;
 import com.jme3.network.serializing.Serializable;
 import com.jme3.network.serializing.Serializer;
-import com.sun.istack.internal.logging.Logger;
+
 
 /**
  *
  * @author vik24rus
  */
 public class UtNetworking {
-    private final Logger log = Logger.getLogger(UtNetworking.class.getClass());
+
     public static final int PORT = 6069;
     public static void initialiseSerializables(){
         Serializer.registerClass(NetworkMessage.class);

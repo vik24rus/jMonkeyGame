@@ -12,17 +12,15 @@ import com.jme3.network.MessageListener;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.system.JmeContext;
-import com.sun.istack.internal.logging.Logger;
 import java.io.IOException;
 import java.util.Random;
-import java.util.logging.Level;
 
 import utils.CreateGeoms;
 import utils.UtNetworking;
 import utils.UtNetworking.LocAndDirMessage;
 import utils.UtNetworking.NetworkMessage;
 import utils.UtNetworking.PositionMessage;
-//import java.util.logging.Logger;
+
 
 /** Пример 1 - как начать с самого простого приложения JME3.
  * На экране отображается 3D куб с просмотром со всех сторон
@@ -31,7 +29,6 @@ import utils.UtNetworking.PositionMessage;
 public class ServerMain extends SimpleApplication {
 
     private Server server;
-    private final Logger log = Logger.getLogger(ServerMain.class.getClass());
     private float counter = 0;        //для рандомного движения коробки 
     private Random random = new Random();
     private Geometry geom;
@@ -44,17 +41,17 @@ public class ServerMain extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        log.setLevel(Level.FINE);
+        //log.setLevel(Level.FINE);
         try{
             server = Network.createServer(UtNetworking.PORT);
             server.start();
         } catch (IOException ex){
-            log.log(Level.SEVERE, "SERVER STARTUP ERROR ", ex);
+            //log.log(Level.SEVERE, "SERVER STARTUP ERROR ", ex);
         }
         server.addMessageListener(new MessageHandler());  //слушаем ответы от клиентов
         geom = new CreateGeoms(this).createBox(); //создали объект взаимодействия
         rootNode.attachChild(geom);
-        log.log(Level.INFO, "!SERVER RUNNING!");
+        //log.log(Level.INFO, "!SERVER RUNNING!");
 
     }
 

@@ -3,21 +3,34 @@ package AppStates;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
-import com.simsilica.lemur.Container;
-import utils.UI;
-
-import java.util.ArrayList;
+import com.simsilica.lemur.*;
 import java.util.logging.Logger;
 
 public class UIAppState extends BaseAppState {
     private SimpleApplication app;
     private final Logger log = Logger.getLogger(String.valueOf(UIAppState.class.getClass()));
-    private UI userUI;
+
+    private GridAppState gridAppState;
+    private UIAppStatePlayerInfo uiAppStatePlayerInfo;
+    private boolean gridRender , containerPlayerInfoShow;
+
+
+
+    Container /*containerPlayerInfo ,*/ containerButtonGrid , containerButtonPlayerInfo;
 
     @Override
     protected void initialize(Application app) {
         this.app = (SimpleApplication) app;
-        userUI = new UI(this.app);
+        //containerPlayerInfo = new Container();
+        uiAppStatePlayerInfo = new UIAppStatePlayerInfo();
+        app.getStateManager().attach(uiAppStatePlayerInfo);
+        uiAppStatePlayerInfo.setEnabled(false);
+        containerPlayerInfoShow = false;
+        //containerPlayerInfo.setLocalTranslation(250,400,0);
+        addGrid();
+        addButtonGrid();
+        addButtonPlayerInfo();
+        //////////////userUI = new UI(this.app);
         //Технически безопасно выполнять всю инициализацию и очистку в методах
         //onEnable()/onDisable(). Выбор использовать initialize() и
         //cleanup() для этого, это вопрос специфики производительности для
@@ -39,12 +52,9 @@ public class UIAppState extends BaseAppState {
         //Вызывается, когда state полностью включено, то есть: установлено и
         //isEnabled() является истинным или когда статус setEnabled() изменяется после
         //прикрепления state.
-        ArrayList<Container> listUI ;
-        listUI = userUI.getListUI();
-        for (int i=0 ; i<listUI.size();i++){
-            app.getGuiNode().attachChild(listUI.get(i));
-        }
-        //app.getGuiNode().attachChild(userUI.getListUI());
+        app.getGuiNode().attachChild(containerButtonGrid);
+        //app.getGuiNode().attachChild(containerPlayerInfo);
+        app.getGuiNode().attachChild(containerButtonPlayerInfo);
 
     }
 
@@ -59,6 +69,61 @@ public class UIAppState extends BaseAppState {
     @Override
     public void update(float tpf) {
         //TODO: реализовать поведение во время выполнения
+    }
+    private void addGrid(){
+        gridAppState = new GridAppState();
+        app.getStateManager().attach(gridAppState);
+        gridRender = true;
+    }
+
+    private void addButtonPlayerInfo(){
+        containerButtonPlayerInfo = new Container();
+        containerButtonPlayerInfo.setLocalTranslation(5, 170, 0);
+        Button buttonGrid = containerButtonPlayerInfo.addChild(new Button("PLAYER INFO"));
+        buttonGrid.addClickCommands(new Command<Button>() {
+            @Override
+            public void execute( Button source ) {
+
+                if (containerPlayerInfoShow == false){
+                    uiAppStatePlayerInfo.setEnabled(true);
+                    containerPlayerInfoShow = true;
+                }else {
+                    uiAppStatePlayerInfo.setEnabled(false);
+                    containerPlayerInfoShow = false;
+                }
+            }
+        });
+
+    }
+
+    private void addButtonGrid(){
+        containerButtonGrid = new Container();
+        // Поместите его куда-нибудь, чтобы мы его увидели.
+        // Примечание. Элементы GUI Lemur прирастают из левого верхнего угла.
+        containerButtonGrid.setLocalTranslation(5, 200, 0);
+        // Добавим некоторые элементы
+        //myWindow.addChild(new Label("Hello, World."));
+
+        Button buttonGrid = containerButtonGrid.addChild(new Button("Grid OFF"));
+        //myWindow.addChild(new ActionButton(new CallMethodAction("Close", myWindow, "removeFromParent")));
+        buttonGrid.addClickCommands(new Command<Button>() {
+            @Override
+            public void execute( Button source ) {
+                if(gridRender == true){
+                    gridAppState.setEnabled(false);
+                    buttonGrid.setText("Grid ON");
+                    gridRender = false;
+                }else
+                {
+                    gridAppState.setEnabled(true);
+                    buttonGrid.setText("Grid OFF");
+                    gridRender = true;
+                }
+                //Example search AppState by name his class
+                //AppState state = stateManager.getState(GridAppState.class);
+                //stateManager.detach(state);
+            }
+        });
     }
 
 }

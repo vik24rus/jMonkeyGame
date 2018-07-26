@@ -19,7 +19,6 @@ import com.jme3.scene.debug.Arrow;
 import com.jme3.system.AppSettings;
 import com.simsilica.lemur.*;
 import com.simsilica.lemur.style.BaseStyles;
-import com.sun.istack.internal.logging.Logger;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -33,7 +32,6 @@ import utils.UtNetworking.PositionMessage;
 public class ClientMain extends SimpleApplication {
 
     private Client client;
-    private final Logger log = Logger.getLogger(ClientMain.class.getClass());
     private ConcurrentLinkedQueue<String> messageQueue;
     private Geometry geom;
     SkyAppState skyAppState;
