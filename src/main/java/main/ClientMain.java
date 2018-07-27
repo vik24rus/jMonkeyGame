@@ -7,6 +7,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.jfx.injme.JmeFxContainer;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -17,12 +18,14 @@ import com.jme3.network.MessageListener;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.debug.Arrow;
 import com.jme3.system.AppSettings;
-import com.simsilica.lemur.*;
-import com.simsilica.lemur.style.BaseStyles;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
 import utils.UtNetworking;
 import utils.UtNetworking.NetworkMessage;
 import utils.UtNetworking.PositionMessage;
@@ -36,6 +39,8 @@ public class ClientMain extends SimpleApplication {
     private Geometry geom;
     SkyAppState skyAppState;
     UIAppState uiAppState;
+
+    //private JmeFxContainer container;
     public static void main(String[] args){
         UtNetworking.initialiseSerializables();
         ClientMain app = new ClientMain();
@@ -56,15 +61,20 @@ public class ClientMain extends SimpleApplication {
     public void simpleInitApp() {
         //setDisplayFps(false);
         //setDisplayStatView(false);
-        //flyCam.setEnabled(true);
+        flyCam.setEnabled(false);
         //inputManager.setCursorVisible(false);
         //JmeCursor jc = (JmeCursor) assetManager.loadAsset("Interface/Nifty/resources/cursorPointing.cur");
         // inputManager.setMouseCursor(jc);
         this.setPauseOnLostFocus(false);
-        GuiGlobals.initialize(this);
-        BaseStyles.loadGlassStyle();
-        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
-
+       // GuiGlobals.initialize(this);
+        //BaseStyles.loadGlassStyle();
+       // GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+//        container = JmeFxContainer.install(this, getGuiNode());
+//        Button button = new Button("BUTTON");
+//        Group rootNode = new Group(button);
+//        Scene scene = new Scene(rootNode, 600, 600);
+//        scene.setFill(Color.TRANSPARENT);
+//        container.setScene(scene, rootNode);
         skyAppState = new SkyAppState();
         uiAppState = new UIAppState();
         stateManager.attach(skyAppState);
@@ -142,6 +152,10 @@ public class ClientMain extends SimpleApplication {
 //            fpsText.setText("NO MESSAGE!!!!!!!!!!!!");
 //        }
         // VSNK TURN ON!!!
+        //super.simpleUpdate(tpf);
+        //if (container.isNeedWriteToJme()) {
+        //        container.writeToJme();
+        //}
 
     }
 
