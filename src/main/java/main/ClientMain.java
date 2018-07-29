@@ -1,14 +1,20 @@
 package main;
 
-import AppStates.GridAppState;
 import AppStates.SkyAppState;
 import AppStates.UIAppState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.asset.AssetInfo;
+import com.jme3.asset.AssetKey;
+import com.jme3.asset.AssetLocator;
+import com.jme3.asset.AssetManager;
+import com.jme3.asset.plugins.ClasspathLocator;
+import com.jme3.asset.plugins.FileLocator;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.jfx.injme.JmeFxContainer;
+import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.material.Material;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.math.ColorRGBA;
@@ -22,10 +28,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
+import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.windows.Window;
+import tonegod.gui.core.Screen;
 import utils.UtNetworking;
 import utils.UtNetworking.NetworkMessage;
 import utils.UtNetworking.PositionMessage;
@@ -40,13 +45,17 @@ public class ClientMain extends SimpleApplication {
     SkyAppState skyAppState;
     UIAppState uiAppState;
 
-    //private JmeFxContainer container;
+    Screen screen;
+    public int winCount = 0;
     public static void main(String[] args){
         UtNetworking.initialiseSerializables();
         ClientMain app = new ClientMain();
         AppSettings settings = new AppSettings(true);
         settings.setTitle("jMonkey 3.2");
         //settings.setSettingsDialogImage("Interface/logic-excavator.png");
+        settings.setHeight(600);
+        settings.setWidth(800);
+
         app.setSettings(settings);
         app.setShowSettings(false);
         app.start();
@@ -59,22 +68,39 @@ public class ClientMain extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+
+        assetManager.registerLocator("/main", ClasspathLocator.class);
         //setDisplayFps(false);
         //setDisplayStatView(false);
         flyCam.setEnabled(false);
-        //inputManager.setCursorVisible(false);
+        inputManager.setCursorVisible(true);
         //JmeCursor jc = (JmeCursor) assetManager.loadAsset("Interface/Nifty/resources/cursorPointing.cur");
         // inputManager.setMouseCursor(jc);
         this.setPauseOnLostFocus(false);
-       // GuiGlobals.initialize(this);
-        //BaseStyles.loadGlassStyle();
-       // GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
-//        container = JmeFxContainer.install(this, getGuiNode());
-//        Button button = new Button("BUTTON");
-//        Group rootNode = new Group(button);
-//        Scene scene = new Scene(rootNode, 600, 600);
-//        scene.setFill(Color.TRANSPARENT);
-//        container.setScene(scene, rootNode);
+
+        screen = new Screen(this, "tonegod/gui/style/def/style_map.gui.xml");
+        screen.initialize();
+        guiNode.addControl(screen);
+
+        // Add window
+        Window win = new Window(screen, "win", new Vector2f(15, 15));
+
+        // create button and add to window
+        ButtonAdapter makeWindow = new ButtonAdapter( screen, "Btn1", new Vector2f(15, 55) ) {
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+                createNewWindow("New Window " + winCount);
+            }
+        };
+        makeWindow.setText("SUKA");
+        win.setUseCloseButton(true);
+        
+        // Add it to our initial window
+        win.addChild(makeWindow);
+
+        // Add window to the screen
+        screen.addElement(win);
+
         skyAppState = new SkyAppState();
         uiAppState = new UIAppState();
         stateManager.attach(skyAppState);
@@ -96,9 +122,19 @@ public class ClientMain extends SimpleApplication {
         attachCoordinateAxes(new Vector3f(0f,0f,0f));
 
         initKeys();
-        //gridAppState = new GridAppState();
-        //stateManager.attach(gridAppState);
 
+
+    }
+
+    public final void createNewWindow(String someWindowTitle) {
+        Window nWin = new Window(
+                screen,
+                "Window" + winCount,
+        new Vector2f( (screen.getWidth()/2)-175, (screen.getHeight()/2)-100 )
+    );
+        nWin.setWindowTitle(someWindowTitle);
+        screen.addElement(nWin);
+        winCount++;
     }
 
     private void initKeys() {
