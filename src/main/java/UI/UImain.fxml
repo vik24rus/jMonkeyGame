@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.UImainFxml">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.UImainController">
    <children>
       <Button fx:id="buttonPlayerInfo" layoutX="19.0" layoutY="534.0" mnemonicParsing="false" onAction="#actionButtonPlayerInfo" text="Player INFO" />
       <Button fx:id="buttonGridControl" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#buttonGridControl" text="ON/OFF GRID" />
