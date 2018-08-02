@@ -2,19 +2,13 @@ package main;
 
 import AppStates.SkyAppState;
 import AppStates.UIAppState;
+import com.google.common.eventbus.EventBus;
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.AssetInfo;
-import com.jme3.asset.AssetKey;
-import com.jme3.asset.AssetLocator;
-import com.jme3.asset.AssetManager;
 import com.jme3.asset.plugins.ClasspathLocator;
-import com.jme3.asset.plugins.FileLocator;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.material.Material;
-import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.math.ColorRGBA;
@@ -26,11 +20,11 @@ import com.jme3.scene.debug.Arrow;
 import com.jme3.system.AppSettings;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
+import utils.EventListener;
+import utils.OurTestEvent;
 import utils.UtNetworking;
 import utils.UtNetworking.NetworkMessage;
 import utils.UtNetworking.PositionMessage;
@@ -45,8 +39,9 @@ public class ClientMain extends SimpleApplication {
     SkyAppState skyAppState;
     UIAppState uiAppState;
 
-    Screen screen;
-    public int winCount = 0;
+    //Tonegod
+    //Screen screen;
+    //public int winCount = 0;
     public static void main(String[] args){
         UtNetworking.initialiseSerializables();
         ClientMain app = new ClientMain();
@@ -69,7 +64,7 @@ public class ClientMain extends SimpleApplication {
     @Override
     public void simpleInitApp() {
 
-        assetManager.registerLocator("/main", ClasspathLocator.class);
+        assetManager.registerLocator("/Assets", ClasspathLocator.class);
         //setDisplayFps(false);
         //setDisplayStatView(false);
         flyCam.setEnabled(false);
@@ -78,28 +73,24 @@ public class ClientMain extends SimpleApplication {
         // inputManager.setMouseCursor(jc);
         this.setPauseOnLostFocus(false);
 
-        screen = new Screen(this, "tonegod/gui/style/def/style_map.gui.xml");
-        screen.initialize();
-        guiNode.addControl(screen);
-
-        // Add window
-        Window win = new Window(screen, "win", new Vector2f(15, 15));
-
-        // create button and add to window
-        ButtonAdapter makeWindow = new ButtonAdapter( screen, "Btn1", new Vector2f(15, 55) ) {
-            @Override
-            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
-                createNewWindow("New Window " + winCount);
-            }
-        };
-        makeWindow.setText("SUKA");
-        win.setUseCloseButton(true);
-        
-        // Add it to our initial window
-        win.addChild(makeWindow);
-
-        // Add window to the screen
-        screen.addElement(win);
+        //Tonegod
+//        screen = new Screen(this, "tonegod/gui/style/def/style_map.gui.xml");
+//        guiNode.addControl(screen);
+//        // Add window
+//        Window win = new Window(screen, "win", new Vector2f(15, 15));
+//        // create button and add to window
+//        ButtonAdapter makeWindow = new ButtonAdapter( screen, "Btn1", new Vector2f(15, 55) ) {
+//            @Override
+//            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+//                createNewWindow("New Window " + winCount);
+//            }
+//        };
+//        makeWindow.setText("NEW WIN");
+//        win.setUseCloseButton(true);
+//        // Add it to our initial window
+//        win.addChild(makeWindow);
+//        // Add window to the screen
+//        screen.addElement(win);
 
         skyAppState = new SkyAppState();
         uiAppState = new UIAppState();
@@ -122,20 +113,33 @@ public class ClientMain extends SimpleApplication {
         attachCoordinateAxes(new Vector3f(0f,0f,0f));
 
         initKeys();
-
+        startEventSystem();
+// given
 
     }
 
-    public final void createNewWindow(String someWindowTitle) {
-        Window nWin = new Window(
-                screen,
-                "Window" + winCount,
-        new Vector2f( (screen.getWidth()/2)-175, (screen.getHeight()/2)-100 )
-    );
-        nWin.setWindowTitle(someWindowTitle);
-        screen.addElement(nWin);
-        winCount++;
+    private void startEventSystem() {
+        EventBus eventBus = new EventBus("test");
+        EventListener listener = new EventListener();
+        eventBus.register(listener);
+
+
+        eventBus.post(new OurTestEvent(200));
+        System.out.println(listener.getLastMessage());
+
     }
+
+//    //Tonegod
+//    public final void createNewWindow(String someWindowTitle) {
+//        Window nWin = new Window(
+//                screen,
+//                "Window" + winCount,
+//        new Vector2f( (screen.getWidth()/2)-175, (screen.getHeight()/2)-100 )
+//    );
+//        nWin.setWindowTitle(someWindowTitle);
+//        screen.addElement(nWin);
+//        winCount++;
+//    }
 
     private void initKeys() {
         // You can map one or several inputs to one named action
