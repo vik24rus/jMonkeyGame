@@ -87,7 +87,7 @@ public class UIAppState extends BaseAppState {
         //containerPlayerInfoShow = false;
         //containerPlayerInfo.setLocalTranslation(250,400,0);
 
-        addGrid();
+        //addGrid();
 
         //Технически безопасно выполнять всю инициализацию и очистку в методах
         //onEnable()/onDisable(). Выбор использовать initialize() и
@@ -136,9 +136,9 @@ public class UIAppState extends BaseAppState {
         //    jmeFxContainerImpl.writeToJme();
         //}
     }
-    private void addGrid(){
-        gridAppState = new GridAppState();
-        app.getStateManager().attach(gridAppState);
-        gridRender = true;
-    }
+//    private void addGrid(){
+//        gridAppState = new GridAppState();
+//        app.getStateManager().attach(gridAppState);
+//        gridRender = true;
+//    }
 }

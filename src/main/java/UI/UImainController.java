@@ -7,11 +7,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import utils.MyStateManager;
 
 import java.io.IOException;
 
 public class UImainController {
-    UImainController uImainController;
+
+    boolean gridOn;
 
     @FXML
     private Button buttonPlayerInfo;
@@ -20,7 +22,7 @@ public class UImainController {
 
     @FXML
     private void initialize() {
-
+        gridOn = true;
     }
 
     public void actionButtonPlayerInfo() {
@@ -40,6 +42,13 @@ public class UImainController {
     }
 
     public void buttonGridControl() {
+        if (gridOn == true){
+            MyStateManager.delGrid();
+            gridOn = false;
+        }else {
+            MyStateManager.addGrid();
+            gridOn = true;
+        }
 
     }
 }

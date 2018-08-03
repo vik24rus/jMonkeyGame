@@ -1,8 +1,10 @@
 package main;
 
+import AppStates.GridAppState;
 import AppStates.SkyAppState;
 import AppStates.UIAppState;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.ClasspathLocator;
 import com.jme3.input.KeyInput;
@@ -24,6 +26,7 @@ import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
 import utils.EventListener;
+import utils.MyStateManager;
 import utils.OurTestEvent;
 import utils.UtNetworking;
 import utils.UtNetworking.NetworkMessage;
@@ -36,8 +39,7 @@ public class ClientMain extends SimpleApplication {
     private Client client;
     private ConcurrentLinkedQueue<String> messageQueue;
     private Geometry geom;
-    SkyAppState skyAppState;
-    UIAppState uiAppState;
+
 
     //Tonegod
     //Screen screen;
@@ -92,10 +94,13 @@ public class ClientMain extends SimpleApplication {
 //        // Add window to the screen
 //        screen.addElement(win);
 
-        skyAppState = new SkyAppState();
-        uiAppState = new UIAppState();
-        stateManager.attach(skyAppState);
-        stateManager.attach(uiAppState);
+
+//        SkyAppState skyAppState = new SkyAppState();
+//        UIAppState uiAppState = new UIAppState();
+//        GridAppState gridAppState = new GridAppState();
+//        stateManager.attach(skyAppState);
+//        stateManager.attach(uiAppState);
+//        stateManager.attach(gridAppState);
 
 
 //        try{
@@ -107,7 +112,10 @@ public class ClientMain extends SimpleApplication {
 
         //geom = new CreateGeoms(this).createBox();
         //rootNode.attachChild(geom);
-
+        MyStateManager myStateManager = new MyStateManager(this);
+        MyStateManager.addGrid();
+        MyStateManager.addSkybox();
+        MyStateManager.addUImain();
         messageQueue = new ConcurrentLinkedQueue<String>() ;
         //client.addMessageListener(new NetworkMessageListener());
         attachCoordinateAxes(new Vector3f(0f,0f,0f));
@@ -118,14 +126,16 @@ public class ClientMain extends SimpleApplication {
 
     }
 
+
+
     private void startEventSystem() {
         EventBus eventBus = new EventBus("test");
-        EventListener listener = new EventListener();
-        eventBus.register(listener);
+        //EventStateManager eventStateManager = new EventStateManager(this); //EventListener
+        //eventBus.register(eventStateManager);
 
+        //eventBus.post(new OurTestEvent(200));
 
-        eventBus.post(new OurTestEvent(200));
-        System.out.println(listener.getLastMessage());
+        //System.out.println(listener.getLastMessage());
 
     }
 
