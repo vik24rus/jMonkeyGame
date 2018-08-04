@@ -1,38 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.UImainController">
    <children>
-      <Button fx:id="buttonPlayerInfo" layoutX="19.0" layoutY="534.0" mnemonicParsing="false" onAction="#actionButtonPlayerInfo" text="Player INFO" />
-      <Button fx:id="buttonGridControl" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#buttonGridControl" text="ON/OFF GRID" />
-      <ScrollPane layoutX="481.0" layoutY="321.0" prefHeight="200.0" prefWidth="215.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" text="123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123" wrapText="true" />
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
-      <ScrollPane layoutX="696.0" layoutY="321.0" prefHeight="200.0" prefWidth="90.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-        </content>
-      </ScrollPane>
-      <Button layoutX="697.0" layoutY="521.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Button" />
-      <TextField layoutX="481.0" layoutY="521.0" prefHeight="25.0" prefWidth="215.0" />
-      <Label layoutX="714.0" layoutY="16.0" prefHeight="35.0" prefWidth="72.0" text="Label" textFill="#c90e0e">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
+      <Pane layoutY="-5.0" prefHeight="36.0" prefWidth="800.0" style="-fx-background-color: Gray;">
+         <children>
+            <ToolBar centerShape="false" focusTraversable="false" layoutY="1.0" prefHeight="35.0" prefWidth="190.0">
+              <items>
+                  <Button fx:id="buttonGridControl" focusTraversable="false" mnemonicParsing="false" onAction="#buttonGridControl" text="ON/OFF GRID" />
+                  <Button fx:id="buttonPlayerInfo" focusTraversable="false" mnemonicParsing="false" onAction="#actionButtonPlayerInfo" text="Player INFO" />
+              </items>
+            </ToolBar>
+         </children>
+      </Pane>
+      <AnchorPane layoutX="121.0" layoutY="86.0" prefHeight="256.0" prefWidth="320.0" />
+      <TreeTableView fx:id="overview" layoutX="14.0" layoutY="344.0" prefHeight="244.0" prefWidth="232.0" style="\\: gray;" />
+      <TabPane layoutX="454.0" layoutY="344.0" prefHeight="244.0" prefWidth="332.0">
+        <tabs>
+          <Tab closable="false" text="System">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField alignment="TOP_LEFT" layoutX="9.0" layoutY="181.0" prefHeight="25.0" prefWidth="187.0" />
+                        <TextArea editable="false" layoutX="9.0" layoutY="9.0" prefHeight="162.0" prefWidth="187.0" wrapText="true" />
+                        <Button layoutX="209.0" layoutY="181.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="Send" />
+                        <TextArea editable="false" layoutX="209.0" layoutY="9.0" prefHeight="160.0" prefWidth="101.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab closable="false" text="Local">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField alignment="TOP_LEFT" layoutX="9.0" layoutY="181.0" prefHeight="25.0" prefWidth="187.0" />
+                        <TextArea editable="false" layoutX="9.0" layoutY="9.0" prefHeight="162.0" prefWidth="187.0" wrapText="true" />
+                        <Button layoutX="209.0" layoutY="181.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="Send" />
+                        <TextArea editable="false" layoutX="209.0" layoutY="9.0" prefHeight="160.0" prefWidth="101.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Untitled Tab">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
    </children>
 </Pane>

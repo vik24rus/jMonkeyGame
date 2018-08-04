@@ -9,15 +9,18 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.ClasspathLocator;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.material.Material;
-import com.jme3.math.Vector3f;
+import com.jme3.math.*;
+import com.jme3.renderer.Camera;
+import com.jme3.scene.CameraNode;
 import com.jme3.scene.Geometry;
-import com.jme3.math.ColorRGBA;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.control.CameraControl;
 import com.jme3.scene.debug.Arrow;
 import com.jme3.system.AppSettings;
 import java.util.concurrent.Callable;
@@ -25,10 +28,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
-import utils.EventListener;
-import utils.MyStateManager;
-import utils.OurTestEvent;
-import utils.UtNetworking;
+import utils.*;
 import utils.UtNetworking.NetworkMessage;
 import utils.UtNetworking.PositionMessage;
 
@@ -40,7 +40,9 @@ public class ClientMain extends SimpleApplication {
     private ConcurrentLinkedQueue<String> messageQueue;
     private Geometry geom;
 
-
+    CameraNode cameranode;
+    Camera camera;
+    Vector3f ve;
     //Tonegod
     //Screen screen;
     //public int winCount = 0;
@@ -69,11 +71,27 @@ public class ClientMain extends SimpleApplication {
         assetManager.registerLocator("/Assets", ClasspathLocator.class);
         //setDisplayFps(false);
         //setDisplayStatView(false);
-        flyCam.setEnabled(false);
+        flyCam.setEnabled(true);
+
         inputManager.setCursorVisible(true);
         //JmeCursor jc = (JmeCursor) assetManager.loadAsset("Interface/Nifty/resources/cursorPointing.cur");
         // inputManager.setMouseCursor(jc);
         this.setPauseOnLostFocus(false);
+//        cam.setLocation(new Vector3f(-4,3,3));  //y - Vertikal
+
+
+        //????
+        //cameraNode = new CameraNode("Main Camera", getCamera());
+        //cameraNode.setControlDir(CameraControl.ControlDirection.SpatialToCamera);
+        cameranode = new CameraNode("Main Camera", getCamera());
+        //cameranode.setControlDir(CameraControl.ControlDirection.SpatialToCamera); //??? WTF
+        rootNode.attachChild(cameranode);
+        cameranode.setLocalTranslation(-4,3,3);
+        Quaternion q2 = new Quaternion();
+//
+        float angle1 = 45*FastMath.DEG_TO_RAD; //наклон
+        float angle2 = 90*FastMath.DEG_TO_RAD; //разворот
+        cameranode.setLocalRotation(q2.fromAngles(angle1,angle2,0));
 
         //Tonegod
 //        screen = new Screen(this, "tonegod/gui/style/def/style_map.gui.xml");
@@ -110,8 +128,8 @@ public class ClientMain extends SimpleApplication {
 //            Logger.getLogger(ClientMain.class.getClass()).log(Level.SEVERE,null,ex);
 //        }
 
-        //geom = new CreateGeoms(this).createBox();
-        //rootNode.attachChild(geom);
+        geom = new CreateGeoms(this).createBox();
+        rootNode.attachChild(geom);
         MyStateManager myStateManager = new MyStateManager(this);
         MyStateManager.addGrid();
         MyStateManager.addSkybox();
@@ -153,18 +171,53 @@ public class ClientMain extends SimpleApplication {
 
     private void initKeys() {
         // You can map one or several inputs to one named action
-        inputManager.addMapping("Pause",  new KeyTrigger(KeyInput.KEY_SPACE));
-        inputManager.addListener(actionListener, "Pause");
+        inputManager.addMapping("camUP",  new KeyTrigger(KeyInput.KEY_UP));
+        inputManager.addMapping("camDOWN",  new KeyTrigger(KeyInput.KEY_DOWN));
+        inputManager.addMapping("camLEFT",  new KeyTrigger(KeyInput.KEY_LEFT));
+        inputManager.addMapping("camRIGHT",  new KeyTrigger(KeyInput.KEY_RIGHT));
+        inputManager.addMapping("camZOOM_Plus",  new KeyTrigger(KeyInput.KEY_1));
+        inputManager.addMapping("camZOOM_Minus",  new KeyTrigger(KeyInput.KEY_2));
+        inputManager.addMapping("Pause",  new KeyTrigger(KeyInput.KEY_P));
+
+        inputManager.addListener(actionListener, "Pause" , "camZOOM_Plus" , "camZOOM_Minus");
+        inputManager.addListener(analogListener, "camUP", "camDOWN", "camLEFT" , "camRIGHT" );
     }
 
     private final ActionListener actionListener = new ActionListener() {
         @Override
         public void onAction(String name, boolean keyPressed, float tpf) {
             if (name.equals("Pause") && !keyPressed) {
-
-                //gridAppState.setEnabled(false);
                 System.out.println("SPACE");
             }
+            if (name.equals("camZOOM_Plus") && !keyPressed ) {
+                ve = cameranode.getLocalTranslation();
+
+                cameranode.setLocalTranslation(ve.x + 1 , ve.y - 1, ve.z);
+
+            }
+            if (name.equals("camZOOM_Minus)") && !keyPressed) {
+                ve = cameranode.getLocalTranslation();
+                cameranode.setLocalTranslation(ve.x + 1 , ve.y + 1, ve.z + 1);
+            }
+        }
+    };
+
+    private final AnalogListener analogListener = new AnalogListener() {
+        @Override
+        public void onAnalog(String name, float value, float tpf) {
+                if (name.equals("camUP")) {
+                    System.out.println("test");
+                }
+                if (name.equals("camDOWN")) {
+                    System.out.println("test");
+                }
+                if (name.equals("camLEFT")) {
+                    System.out.println("test");
+                }
+                if (name.equals("camRIGHT")) {
+                    System.out.println("test");
+                }
+
         }
     };
 
@@ -187,7 +240,7 @@ public class ClientMain extends SimpleApplication {
         mat.getAdditionalRenderState().setLineWidth(5);
         mat.setColor("Color", color);
         g.setMaterial(mat);
-        g.setLocalScale(15f);
+        g.setLocalScale(50f);
         rootNode.attachChild(g);
         return g;
     }
@@ -206,6 +259,7 @@ public class ClientMain extends SimpleApplication {
         //if (container.isNeedWriteToJme()) {
         //        container.writeToJme();
         //}
+
 
     }
 

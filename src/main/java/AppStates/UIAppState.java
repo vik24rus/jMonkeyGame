@@ -1,5 +1,6 @@
 package AppStates;
 
+import UI.UImainController;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -9,6 +10,10 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -41,8 +46,10 @@ public class UIAppState extends BaseAppState {
         }
         Group root2 = new Group();
         Scene scene = new Scene(root, 800, 600);
+
         scene.setFill(Color.TRANSPARENT);
         container.setScene(scene, root2);
+
 
         //EmbeddedWindow
 //        jmeFxContainerImpl = JmeFxContainerImpl.install(this.app, this.app.getGuiNode());
