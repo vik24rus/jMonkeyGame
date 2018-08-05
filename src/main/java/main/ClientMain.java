@@ -71,7 +71,7 @@ public class ClientMain extends SimpleApplication {
         assetManager.registerLocator("/Assets", ClasspathLocator.class);
         //setDisplayFps(false);
         //setDisplayStatView(false);
-        flyCam.setEnabled(true);
+        flyCam.setEnabled(false);
 
         inputManager.setCursorVisible(true);
         //JmeCursor jc = (JmeCursor) assetManager.loadAsset("Interface/Nifty/resources/cursorPointing.cur");
@@ -83,15 +83,16 @@ public class ClientMain extends SimpleApplication {
         //????
         //cameraNode = new CameraNode("Main Camera", getCamera());
         //cameraNode.setControlDir(CameraControl.ControlDirection.SpatialToCamera);
-        cameranode = new CameraNode("Main Camera", getCamera());
+
+       ////////// cameranode = new CameraNode("Main Camera", getCamera());
         //cameranode.setControlDir(CameraControl.ControlDirection.SpatialToCamera); //??? WTF
-        rootNode.attachChild(cameranode);
-        cameranode.setLocalTranslation(-4,3,3);
-        Quaternion q2 = new Quaternion();
+     //   rootNode.attachChild(cameranode);
+     //   cameranode.setLocalTranslation(-4,3,3);
+     //   Quaternion q2 = new Quaternion();
 //
-        float angle1 = 45*FastMath.DEG_TO_RAD; //наклон
-        float angle2 = 90*FastMath.DEG_TO_RAD; //разворот
-        cameranode.setLocalRotation(q2.fromAngles(angle1,angle2,0));
+    //    float angle1 = 45*FastMath.DEG_TO_RAD; //наклон
+    //    float angle2 = 90*FastMath.DEG_TO_RAD; //разворот
+     ///////////   cameranode.setLocalRotation(q2.fromAngles(angle1,angle2,0));
 
         //Tonegod
 //        screen = new Screen(this, "tonegod/gui/style/def/style_map.gui.xml");
@@ -134,11 +135,12 @@ public class ClientMain extends SimpleApplication {
         MyStateManager.addGrid();
         MyStateManager.addSkybox();
         MyStateManager.addUImain();
+        MyStateManager.addCamera();
         messageQueue = new ConcurrentLinkedQueue<String>() ;
         //client.addMessageListener(new NetworkMessageListener());
         attachCoordinateAxes(new Vector3f(0f,0f,0f));
 
-        initKeys();
+        ///initKeys();
         startEventSystem();
 // given
 
@@ -169,57 +171,57 @@ public class ClientMain extends SimpleApplication {
 //        winCount++;
 //    }
 
-    private void initKeys() {
-        // You can map one or several inputs to one named action
-        inputManager.addMapping("camUP",  new KeyTrigger(KeyInput.KEY_UP));
-        inputManager.addMapping("camDOWN",  new KeyTrigger(KeyInput.KEY_DOWN));
-        inputManager.addMapping("camLEFT",  new KeyTrigger(KeyInput.KEY_LEFT));
-        inputManager.addMapping("camRIGHT",  new KeyTrigger(KeyInput.KEY_RIGHT));
-        inputManager.addMapping("camZOOM_Plus",  new KeyTrigger(KeyInput.KEY_1));
-        inputManager.addMapping("camZOOM_Minus",  new KeyTrigger(KeyInput.KEY_2));
-        inputManager.addMapping("Pause",  new KeyTrigger(KeyInput.KEY_P));
+//    private void initKeys() {
+//        // You can map one or several inputs to one named action
+//        inputManager.addMapping("camUP",  new KeyTrigger(KeyInput.KEY_UP));
+//        inputManager.addMapping("camDOWN",  new KeyTrigger(KeyInput.KEY_DOWN));
+//        inputManager.addMapping("camLEFT",  new KeyTrigger(KeyInput.KEY_LEFT));
+//        inputManager.addMapping("camRIGHT",  new KeyTrigger(KeyInput.KEY_RIGHT));
+//        inputManager.addMapping("camZOOM_Plus",  new KeyTrigger(KeyInput.KEY_1));
+//        inputManager.addMapping("camZOOM_Minus",  new KeyTrigger(KeyInput.KEY_2));
+//        inputManager.addMapping("Pause",  new KeyTrigger(KeyInput.KEY_P));
+//
+//        inputManager.addListener(actionListener, "Pause" , "camZOOM_Plus" , "camZOOM_Minus");
+//        inputManager.addListener(analogListener, "camUP", "camDOWN", "camLEFT" , "camRIGHT" );
+//    }
+//
+//    private final ActionListener actionListener = new ActionListener() {
+//        @Override
+//        public void onAction(String name, boolean keyPressed, float tpf) {
+//            if (name.equals("Pause") && !keyPressed) {
+//                System.out.println("SPACE");
+//            }
+//            if (name.equals("camZOOM_Plus") && !keyPressed ) {
+//                ve = cameranode.getLocalTranslation();
+//
+//                cameranode.setLocalTranslation(ve.x + 1 , ve.y - 1, ve.z);
+//
+//            }
+//            if (name.equals("camZOOM_Minus)") && !keyPressed) {
+//                ve = cameranode.getLocalTranslation();
+//                cameranode.setLocalTranslation(ve.x + 1 , ve.y + 1, ve.z + 1);
+//            }
+//        }
+//    };
 
-        inputManager.addListener(actionListener, "Pause" , "camZOOM_Plus" , "camZOOM_Minus");
-        inputManager.addListener(analogListener, "camUP", "camDOWN", "camLEFT" , "camRIGHT" );
-    }
-
-    private final ActionListener actionListener = new ActionListener() {
-        @Override
-        public void onAction(String name, boolean keyPressed, float tpf) {
-            if (name.equals("Pause") && !keyPressed) {
-                System.out.println("SPACE");
-            }
-            if (name.equals("camZOOM_Plus") && !keyPressed ) {
-                ve = cameranode.getLocalTranslation();
-
-                cameranode.setLocalTranslation(ve.x + 1 , ve.y - 1, ve.z);
-
-            }
-            if (name.equals("camZOOM_Minus)") && !keyPressed) {
-                ve = cameranode.getLocalTranslation();
-                cameranode.setLocalTranslation(ve.x + 1 , ve.y + 1, ve.z + 1);
-            }
-        }
-    };
-
-    private final AnalogListener analogListener = new AnalogListener() {
-        @Override
-        public void onAnalog(String name, float value, float tpf) {
-                if (name.equals("camUP")) {
-                    System.out.println("test");
-                }
-                if (name.equals("camDOWN")) {
-                    System.out.println("test");
-                }
-                if (name.equals("camLEFT")) {
-                    System.out.println("test");
-                }
-                if (name.equals("camRIGHT")) {
-                    System.out.println("test");
-                }
-
-        }
-    };
+//    private final AnalogListener analogListener = new AnalogListener() {
+//        @Override
+//        public void onAnalog(String name, float value, float tpf) {
+//                if (name.equals("camUP")) {
+//                    System.out.println("test");
+//                }
+//                if (name.equals("camDOWN")) {
+//                    System.out.println("test");
+//                }
+//                if (name.equals("camLEFT")) {
+//                    System.out.println("test");
+//                }
+//                if (name.equals("camRIGHT")) {
+//                    System.out.println("test");
+//                }
+//
+//        }
+//    };
 
     private void attachCoordinateAxes(Vector3f pos){
         Arrow arrow = new Arrow(Vector3f.UNIT_X);

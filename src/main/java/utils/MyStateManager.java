@@ -1,5 +1,6 @@
 package utils;
 
+import AppStates.CameraAppState;
 import AppStates.GridAppState;
 import AppStates.SkyAppState;
 import AppStates.UIAppState;
@@ -13,6 +14,7 @@ public class MyStateManager {
 
     static SkyAppState skyAppState ;
     static UIAppState uiAppState;
+    static CameraAppState cameraAppState;
 
 
     public MyStateManager(SimpleApplication application){
@@ -20,6 +22,7 @@ public class MyStateManager {
         gridAppState = new GridAppState();
         uiAppState = new UIAppState();
         skyAppState = new SkyAppState();
+        cameraAppState = new CameraAppState();
     }
 
 
@@ -42,4 +45,5 @@ public class MyStateManager {
         application.getStateManager().attach(skyAppState);
     }
 
+    public static void addCamera() { application.getStateManager().attach(cameraAppState); }
 }
