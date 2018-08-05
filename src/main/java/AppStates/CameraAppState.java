@@ -44,19 +44,12 @@ public class CameraAppState extends BaseAppState {
         app.getInputManager().addMapping("Right", new MouseAxisTrigger(MouseInput.AXIS_X, false));
         app.getInputManager().addMapping("Up", new MouseAxisTrigger(MouseInput.AXIS_Y, true));
         app.getInputManager().addMapping("Down", new MouseAxisTrigger(MouseInput.AXIS_Y, false));
-
-//        app.getInputManager().addMapping("camUP",  new KeyTrigger(KeyInput.KEY_UP));
-//        app.getInputManager().addMapping("camDOWN",  new KeyTrigger(KeyInput.KEY_DOWN));
-//        app.getInputManager().addMapping("camLEFT",  new KeyTrigger(KeyInput.KEY_LEFT));
-//        app.getInputManager().addMapping("camRIGHT",  new KeyTrigger(KeyInput.KEY_RIGHT));
-        app.getInputManager().addMapping("camZOOM_Plus",  new KeyTrigger(KeyInput.KEY_A));
-        app.getInputManager().addMapping("camZOOM_Minus", new KeyTrigger(KeyInput.KEY_Z));
-        app.getInputManager().addMapping("defaultCamPosition",  new KeyTrigger(KeyInput.KEY_SPACE));
+        app.getInputManager().addMapping("defaultCamPosition",  new KeyTrigger(KeyInput.KEY_MINUS));
 
         app.getInputManager().addMapping("camZOOM_Wheel_Minus",  new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true));
         app.getInputManager().addMapping("camZOOM_Wheel_Plus",  new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
 
-        app.getInputManager().addListener(actionListener, "defaultCamPosition" , "camZOOM_Plus" , "camZOOM_Minus" , "Drag" );
+        app.getInputManager().addListener(actionListener, "defaultCamPosition" , "Drag" );
         app.getInputManager().addListener(analogListener, "Left", "Right", "Up", "Down" , "camZOOM_Wheel_Minus" , "camZOOM_Wheel_Plus");
     }
 
@@ -66,16 +59,6 @@ public class CameraAppState extends BaseAppState {
             if (name.equals("defaultCamPosition") && !keyPressed) {
                 cameranode.setLocalTranslation(-4,3,3);
             }
-            if (name.equals("camZOOM_Plus") && !keyPressed ) {
-                mainCameraPosition = cameranode.getLocalTranslation();
-                cameranode.setLocalTranslation(mainCameraPosition.x + 1 , mainCameraPosition.y - 1, mainCameraPosition.z);
-            }
-            if (name.equals("camZOOM_Minus") && !keyPressed) {
-                mainCameraPosition = cameranode.getLocalTranslation();
-                cameranode.setLocalTranslation(mainCameraPosition.x - 1 , mainCameraPosition.y + 1 , mainCameraPosition.z);
-            }
-
-
             if (name.equals("Drag") && keyPressed) {
                 drag = true;
             }
@@ -90,22 +73,6 @@ public class CameraAppState extends BaseAppState {
         public void onAnalog(String name, float value, float tpf) {
             int speed = 25;
             if (drag) {
-//                if (name.equals("camUP")) {
-//                    mainCameraPosition = cameranode.getLocalTranslation();
-//                    cameranode.setLocalTranslation(mainCameraPosition.x + 1 / speed, mainCameraPosition.y, mainCameraPosition.z);
-//                }
-//                if (name.equals("camDOWN")) {
-//                    mainCameraPosition = cameranode.getLocalTranslation();
-//                    cameranode.setLocalTranslation(mainCameraPosition.x - 1 / speed, mainCameraPosition.y, mainCameraPosition.z);
-//                }
-//                if (name.equals("camLEFT")) {
-//                    mainCameraPosition = cameranode.getLocalTranslation();
-//                    cameranode.setLocalTranslation(mainCameraPosition.x, mainCameraPosition.y, mainCameraPosition.z - 1 / speed);
-//                }
-//                if (name.equals("camRIGHT")) {
-//                    mainCameraPosition = cameranode.getLocalTranslation();
-//                    cameranode.setLocalTranslation(mainCameraPosition.x, mainCameraPosition.y, mainCameraPosition.z + 1 / speed);
-//                }
                 if (name.equals("Right")) {
                     mainCameraPosition = cameranode.getLocalTranslation();
                     cameranode.setLocalTranslation(mainCameraPosition.x , mainCameraPosition.y, mainCameraPosition.z - value * speed);
@@ -116,7 +83,6 @@ public class CameraAppState extends BaseAppState {
                 }
                 if (name.equals("Up")) {
                     mainCameraPosition = cameranode.getLocalTranslation();
-                    //cameranode.setLocalTranslation(mainCameraPosition.x, mainCameraPosition.y + value * speed, mainCameraPosition.z);
                     cameranode.setLocalTranslation(mainCameraPosition.x + value * speed, mainCameraPosition.y , mainCameraPosition.z);
                 }
                 if (name.equals("Down")) {
