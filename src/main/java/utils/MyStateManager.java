@@ -1,9 +1,6 @@
 package utils;
 
-import AppStates.CameraAppState;
-import AppStates.GridAppState;
-import AppStates.SkyAppState;
-import AppStates.UIAppState;
+import AppStates.*;
 import com.jme3.app.SimpleApplication;
 
 
@@ -15,6 +12,8 @@ public class MyStateManager {
     static SkyAppState skyAppState ;
     static UIAppState uiAppState;
     static CameraAppState cameraAppState;
+    static ForTestAppState forTestAppState;
+    static LightAppState lightAppState;
 
 
     public MyStateManager(SimpleApplication application){
@@ -23,6 +22,8 @@ public class MyStateManager {
         uiAppState = new UIAppState();
         skyAppState = new SkyAppState();
         cameraAppState = new CameraAppState();
+        forTestAppState = new ForTestAppState();
+        lightAppState = new LightAppState();
     }
 
 
@@ -46,4 +47,8 @@ public class MyStateManager {
     }
 
     public static void addCamera() { application.getStateManager().attach(cameraAppState); }
+
+    public static void forTest() { application.getStateManager().attach(forTestAppState); }
+
+    public static void addLight() { application.getStateManager().attach(lightAppState); }
 }

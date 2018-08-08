@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,7 +23,6 @@
             </ToolBar>
          </children>
       </Pane>
-      <AnchorPane layoutX="121.0" layoutY="86.0" prefHeight="256.0" prefWidth="320.0" />
       <TreeTableView fx:id="overview" layoutX="14.0" layoutY="344.0" prefHeight="244.0" prefWidth="232.0" style="\\: gray;" />
       <TabPane layoutX="454.0" layoutY="344.0" prefHeight="244.0" prefWidth="332.0">
         <tabs>
@@ -57,5 +57,27 @@
             </Tab>
         </tabs>
       </TabPane>
+      <TitledPane animated="false" layoutX="554.0" layoutY="38.0" prefHeight="244.0" prefWidth="232.0" text="INFO">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TabPane layoutX="-4.0" layoutY="1.0" prefHeight="220.0" prefWidth="238.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Untitled Tab 1">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="185.0" prefWidth="256.0" />
+                        </content>
+                      </Tab>
+                      <Tab text="Untitled Tab 2">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
    </children>
 </Pane>

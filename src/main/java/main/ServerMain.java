@@ -8,13 +8,16 @@ import com.jme3.math.Ray;
 import com.jme3.network.Filters;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
-import com.jme3.network.MessageListener;
+
 import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.system.JmeContext;
 import java.io.IOException;
 import java.util.Random;
 
+import event.Event;
+import network.server.ConnectionListener;
+import network.server.MessageListener;
 import utils.CreateGeoms;
 import utils.UtNetworking;
 import utils.UtNetworking.LocAndDirMessage;
@@ -41,41 +44,42 @@ public class ServerMain extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        //log.setLevel(Level.FINE);
         try{
             server = Network.createServer(UtNetworking.PORT);
+            //server.addMessageListener(new MessageHandler());  //слушаем ответы от клиентов
+            server.addMessageListener(new MessageListener(), Event.class);  // IN OpenRTS
+            server.addConnectionListener(new ConnectionListener());
             server.start();
         } catch (IOException ex){
-            //log.log(Level.SEVERE, "SERVER STARTUP ERROR ", ex);
+            System.out.println("Error start server");
         }
-        server.addMessageListener(new MessageHandler());  //слушаем ответы от клиентов
         geom = new CreateGeoms(this).createBox(); //создали объект взаимодействия
         rootNode.attachChild(geom);
-        //log.log(Level.INFO, "!SERVER RUNNING!");
+        System.out.println("Server startup!");
 
     }
 
-    private class MessageHandler implements MessageListener <HostedConnection>{
-
-        @Override
-        public void messageReceived(HostedConnection source, Message m) {
-            if (m instanceof LocAndDirMessage){        //если объект сообщения относится к координатам коробки
-                LocAndDirMessage message  = (LocAndDirMessage) m;
-                Vector3f location = message.GetLocation();
-                Vector3f direction = message.GetDirection();
-
-                Ray ray = new Ray(location , direction);   //проверям попадание
-                CollisionResults results = new CollisionResults();
-                rootNode.collideWith(ray,results);
-                if (results.size() > 0){ //если луч попал в коробку
-                    server.broadcast(Filters.equalTo(source) , new NetworkMessage ("won")); //тому от кого пришло сообщение - отправка ВЫИГРАЛ
-                    server.broadcast(Filters.notEqualTo(source) , new NetworkMessage ("lost")); //отправка всем кто подключен кроме того кто отправил сообщение
-                }
-
-            }
-        }
-
-    }
+//    private class MessageHandler implements MessageListener <HostedConnection>{
+//
+//        @Override
+//        public void messageReceived(HostedConnection source, Message m) {
+//            if (m instanceof LocAndDirMessage){        //если объект сообщения относится к координатам коробки
+//                LocAndDirMessage message  = (LocAndDirMessage) m;
+//                Vector3f location = message.GetLocation();
+//                Vector3f direction = message.GetDirection();
+//
+//                Ray ray = new Ray(location , direction);   //проверям попадание
+//                CollisionResults results = new CollisionResults();
+//                rootNode.collideWith(ray,results);
+//                if (results.size() > 0){ //если луч попал в коробку
+//                    server.broadcast(Filters.equalTo(source) , new NetworkMessage ("won")); //тому от кого пришло сообщение - отправка ВЫИГРАЛ
+//                    server.broadcast(Filters.notEqualTo(source) , new NetworkMessage ("lost")); //отправка всем кто подключен кроме того кто отправил сообщение
+//                }
+//
+//            }
+//        }
+//
+//    }
 
     @Override
     public void simpleUpdate(float tpf){

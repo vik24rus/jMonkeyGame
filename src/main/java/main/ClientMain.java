@@ -1,11 +1,12 @@
 package main;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.ClasspathLocator;
+import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.material.Material;
 import com.jme3.math.*;
+import com.jme3.network.Network;
 import com.jme3.scene.Geometry;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
@@ -13,6 +14,7 @@ import com.jme3.network.MessageListener;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.debug.Arrow;
 import com.jme3.system.AppSettings;
+import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import utils.*;
@@ -56,8 +58,8 @@ public class ClientMain extends SimpleApplication {
         //setDisplayStatView(false);
         flyCam.setEnabled(false);
         inputManager.setCursorVisible(true);
-        //JmeCursor jc = (JmeCursor) assetManager.loadAsset("Interface/Nifty/resources/cursorPointing.cur");
-        // inputManager.setMouseCursor(jc);
+        JmeCursor jc = (JmeCursor) assetManager.loadAsset("tonegod/gui/style/def/Common/Cursors/Pointer.cur");
+        inputManager.setMouseCursor(jc);
         this.setPauseOnLostFocus(false);
 
         //Tonegod
@@ -79,48 +81,31 @@ public class ClientMain extends SimpleApplication {
 //        // Add window to the screen
 //        screen.addElement(win);
 
-
-//        SkyAppState skyAppState = new SkyAppState();
-//        UIAppState uiAppState = new UIAppState();
-//        GridAppState gridAppState = new GridAppState();
-//        stateManager.attach(skyAppState);
-//        stateManager.attach(uiAppState);
-//        stateManager.attach(gridAppState);
-
-
-//        try{
-//            client = Network.connectToServer("127.0.0.1", UtNetworking.PORT);
-//            client.start();
-//        } catch (IOException ex){
-//            Logger.getLogger(ClientMain.class.getClass()).log(Level.SEVERE,null,ex);
-//        }
-
         geom = new CreateGeoms(this).createBox();
         rootNode.attachChild(geom);
+
         MyStateManager myStateManager = new MyStateManager(this);
         MyStateManager.addGrid();
         MyStateManager.addSkybox();
         MyStateManager.addUImain();
         MyStateManager.addCamera();
-        messageQueue = new ConcurrentLinkedQueue<String>() ;
-        //client.addMessageListener(new NetworkMessageListener());
+        MyStateManager.forTest();
+        MyStateManager.addLight();
         attachCoordinateAxes(new Vector3f(0f,0f,0f));
 
-        startEventSystem();
-    }
 
-
-
-    private void startEventSystem() {
-        EventBus eventBus = new EventBus("test");
-        //EventStateManager eventStateManager = new EventStateManager(this); //EventListener
-        //eventBus.register(eventStateManager);
-
-        //eventBus.post(new OurTestEvent(200));
-
-        //System.out.println(listener.getLastMessage());
+        try{
+            client = Network.connectToServer("127.0.0.1", UtNetworking.PORT);
+            client.start();
+        } catch (IOException ex){
+            System.out.println("Error connect to server");
+        }
+        messageQueue = new ConcurrentLinkedQueue<String>() ;
+        client.addMessageListener(new NetworkMessageListener());
 
     }
+
+
 
 //    //Tonegod
 //    public final void createNewWindow(String someWindowTitle) {
@@ -168,13 +153,6 @@ public class ClientMain extends SimpleApplication {
 //        }else{
 //            fpsText.setText("NO MESSAGE!!!!!!!!!!!!");
 //        }
-        // VSNK TURN ON!!!
-        //super.simpleUpdate(tpf);
-        //if (container.isNeedWriteToJme()) {
-        //        container.writeToJme();
-        //}
-
-
     }
 
     private class NetworkMessageListener implements MessageListener <Client>{
@@ -230,7 +208,7 @@ public class ClientMain extends SimpleApplication {
 
     @Override
     public void destroy(){
-        //client.close();
+        client.close();
         super.destroy();
     }
 }

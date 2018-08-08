@@ -13,9 +13,9 @@ import com.jme3.scene.CameraNode;
 
 
 public class CameraAppState extends BaseAppState {
-    SimpleApplication app;
-    CameraNode cameranode;
-    Vector3f mainCameraPosition;
+    private SimpleApplication app;
+    private CameraNode cameranode;
+    private Vector3f mainCameraPosition;
     private Boolean drag=false;
     @Override
     protected void initialize(Application app ) {
@@ -23,8 +23,8 @@ public class CameraAppState extends BaseAppState {
 
         cameranode = new CameraNode("Main Camera", app.getCamera());
         //cameranode.setControlDir(CameraControl.ControlDirection.SpatialToCamera); //??? WTF
-        ((SimpleApplication) app).getRootNode().attachChild(cameranode);
-        cameranode.setLocalTranslation(-4,3,3);
+        this.app.getRootNode().attachChild(cameranode);
+        cameranode.setLocalTranslation(-25,20,0);
         Quaternion q2 = new Quaternion();
         float angle_vertical = 45*FastMath.DEG_TO_RAD; //наклон
         float angle_turn = 90*FastMath.DEG_TO_RAD; //разворот

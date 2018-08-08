@@ -3,58 +3,34 @@ package AppStates;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.jfx.injme.JmeFxContainer;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import java.io.IOException;
+import com.jme3.light.AmbientLight;
+import com.jme3.light.SpotLight;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Vector3f;
 
 
-
-
-public class UIAppState extends BaseAppState {
-
-    private SimpleApplication app;
-    private JmeFxContainer container;
-    private Parent root;
-
-    //EmbeddedWindow
-    //JmeFxContainerImpl jmeFxContainerImpl;
+public class LightAppState  extends BaseAppState {
+    SimpleApplication app;
 
     @Override
     protected void initialize(Application app ) {
         this.app = (SimpleApplication) app;
-        container = JmeFxContainer.install(this.app, this.app.getGuiNode());
-        try {
-            root = FXMLLoader.load(getClass().getResource("/UI/UImain.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Group root2 = new Group();
-        Scene scene = new Scene(root, 800, 600);
 
-        scene.setFill(Color.TRANSPARENT);
-        container.setScene(scene, root2);
+        SpotLight spot = new SpotLight();
+        spot.setSpotRange(100f);                           // расстояние
+        spot.setSpotInnerAngle(85f * FastMath.DEG_TO_RAD); // внутренний световой конус (центральный луч)
+        spot.setSpotOuterAngle(85f * FastMath.DEG_TO_RAD); // наружный световой конус (край света)
+        spot.setColor(ColorRGBA.White.mult(1.3f));         // светлый цвет
+        spot.setPosition(new Vector3f(-3,0,-3));               // shine from camera loc
+        spot.setDirection(new Vector3f(1,0,1));             // shine forward from camera loc
+        this.app.getRootNode().addLight(spot);
 
 
-        //EmbeddedWindow
-//        jmeFxContainerImpl = JmeFxContainerImpl.install(this.app, this.app.getGuiNode());
-//        JmeFxHostInterface jmeFxHostInterface = new JmeFxHostInterface(jmeFxContainerImpl);
-//        EmbeddedWindow embeddedWindow = new EmbeddedWindow(jmeFxHostInterface);
-//        try {
-//            root2 = FXMLLoader.load(getClass().getResource("/utils/lol.fxml"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Scene scene2 = new Scene(root2, 100, 100);
-//        scene2.setFill(Color.TRANSPARENT);
-//        embeddedWindow.setScene(scene2);
-//        Group rootNode2 = new Group();
-//        jmeFxContainerImpl.setEmbeddedWindow(embeddedWindow);
-//        jmeFxContainerImpl.setScene(scene2, rootNode2);
-
+        AmbientLight al = new AmbientLight();
+        al.setColor(ColorRGBA.White.mult(0.3f));
+        this.app.getRootNode().addLight(al);
 
         //Технически безопасно выполнять всю инициализацию и очистку в методах
         //onEnable()/onDisable(). Выбор использовать initialize() и
@@ -62,7 +38,6 @@ public class UIAppState extends BaseAppState {
         //разработчика.
         //TODO: Инициализация AppState, например, присоединение spatials к rootNode
     }
-
 
 
     @Override
@@ -94,13 +69,6 @@ public class UIAppState extends BaseAppState {
     @Override
     public void update(float tpf) {
         //TODO: реализовать поведение во время выполнения
-        //super.update(tpf);
-        if (container.isNeedWriteToJme()) {
-            container.writeToJme();
-        }
-        // FOR embeddedWindow
-        //if (jmeFxContainerImpl.isNeedWriteToJme()) {
-        //    jmeFxContainerImpl.writeToJme();
-        //}
+
     }
 }
