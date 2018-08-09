@@ -26,18 +26,31 @@ public class UIAppState extends BaseAppState {
     @Override
     protected void initialize(Application app ) {
         this.app = (SimpleApplication) app;
+        Group root2;
+        Scene scene;
         container = JmeFxContainer.install(this.app, this.app.getGuiNode());
-        try {
-            root = FXMLLoader.load(getClass().getResource("/UI/UImain.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if((this.app.getContext().getSettings().getWidth() == 1280)& (this.app.getContext().getSettings().getHeight() == 720)){
+            try {
+                root = FXMLLoader.load(getClass().getResource("/UI/UImain1280x720.fxml"));
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+            root2 = new Group();
+            scene = new Scene(root, 1280, 720);
+            scene.setFill(Color.TRANSPARENT);
+            container.setScene(scene, root2);
+        }else if ((this.app.getContext().getSettings().getWidth() == 800) & (this.app.getContext().getSettings().getHeight() == 600)) {
+            try {
+                root = FXMLLoader.load(getClass().getResource("/UI/UImain.fxml"));
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+            root2 = new Group();
+            scene = new Scene(root, 800, 600);
+            scene.setFill(Color.TRANSPARENT);
+            container.setScene(scene, root2);
         }
-        Group root2 = new Group();
-        Scene scene = new Scene(root, 800, 600);
-
-        scene.setFill(Color.TRANSPARENT);
-        container.setScene(scene, root2);
-
 
         //EmbeddedWindow
 //        jmeFxContainerImpl = JmeFxContainerImpl.install(this.app, this.app.getGuiNode());

@@ -17,10 +17,11 @@ import com.jme3.system.AppSettings;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import org.lwjgl.glfw.GLFW;
+import com.jme3.system.lwjgl.LwjglWindow;
 import utils.*;
 import utils.UtNetworking.NetworkMessage;
 import utils.UtNetworking.PositionMessage;
-
 
 
 public class ClientMain extends SimpleApplication {
@@ -37,8 +38,9 @@ public class ClientMain extends SimpleApplication {
         AppSettings settings = new AppSettings(true);
         settings.setTitle("jMonkey 3.2");
         //settings.setSettingsDialogImage("Interface/logic-excavator.png");
-        settings.setHeight(600);
-        settings.setWidth(800);
+        settings.setHeight(720);
+        settings.setWidth(1280);
+
 
         app.setSettings(settings);
         app.setShowSettings(false);
@@ -52,7 +54,11 @@ public class ClientMain extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-
+        //////Windows Position
+        final LwjglWindow lwjglContext = (LwjglWindow) this.getContext();
+        final long windowHandle = lwjglContext.getWindowHandle();
+        GLFW.glfwSetWindowPos(windowHandle, 0 ,10 );
+        //////Windows Position
         assetManager.registerLocator("/Assets", ClasspathLocator.class);
         //setDisplayFps(false);
         //setDisplayStatView(false);
@@ -85,11 +91,12 @@ public class ClientMain extends SimpleApplication {
         rootNode.attachChild(geom);
 
         MyStateManager myStateManager = new MyStateManager(this);
-        MyStateManager.addGrid();
-        MyStateManager.addSkybox();
+        MyStateManager.addGrid();;
         MyStateManager.addUImain();
         MyStateManager.addCamera();
-        MyStateManager.forTest();
+        //TODO объединить в один AppState
+        MyStateManager.addSkybox();
+        MyStateManager.addPlanet();
         MyStateManager.addLight();
         attachCoordinateAxes(new Vector3f(0f,0f,0f));
 

@@ -7,12 +7,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -53,8 +51,12 @@ public class UImainController {
     private TreeTableView overview;
 
     @FXML
+    private TitledPane info_panel;
+
+    @FXML
     private void initialize() {
         gridOn = true;
+        info_panel.setExpanded(false);
 //        //Creating tree items
 //        final TreeItem<String> childNode1 = new TreeItem<>("Child Node 1");
 //        final TreeItem<String> childNode2 = new TreeItem<>("Child Node 2");

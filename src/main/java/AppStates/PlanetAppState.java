@@ -3,23 +3,19 @@ package AppStates;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.light.AmbientLight;
-import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
-import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.BloomFilter;
 import com.jme3.scene.Spatial;
 
 
-public class ForTestAppState extends BaseAppState {
+public class PlanetAppState extends BaseAppState {
     SimpleApplication app;
     Spatial planet1;
     Material m;
-    Spatial planet2;
-    Material m2;
+    Spatial sun;
+    Material sunMaterial;
     Spatial planet3;
     Material m3;
     @Override
@@ -28,7 +24,7 @@ public class ForTestAppState extends BaseAppState {
 
         //1
         planet1 = this.app.getAssetManager().loadModel("Models/planet1.j3o" );
-        planet1.setLocalTranslation(10,0,-1);
+        planet1.setLocalTranslation(5,0,30);
         //m = new Material (this.app.getAssetManager(), "Models/Material.001.material");
         m = new Material (this.app.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
         m.setBoolean("UseMaterialColors",true);  // Установим некоторые параметры, например. Синий.
@@ -42,19 +38,20 @@ public class ForTestAppState extends BaseAppState {
         BloomFilter bloom = new BloomFilter(BloomFilter.GlowMode.Objects);
         fpp.addFilter(bloom);
         this.app.getViewPort().addProcessor(fpp);
-        planet2 = this.app.getAssetManager().loadModel("Models/planet2.j3o" );
-        planet2.setLocalTranslation(0,0,0);
-        planet2.setLocalScale(0.5f);
+        sun = this.app.getAssetManager().loadModel("Models/planet2.j3o" );
+        sun.setLocalTranslation(0,0,0);
+        sun.setLocalScale(0.5f);
         //m = new Material (this.app.getAssetManager(), "Models/Material.001.material");
-        m2 = new Material (this.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-        m2.setColor("GlowColor",ColorRGBA.White);
-        //m2.setColor("Color", ColorRGBA.Orange);
-        planet2.setMaterial(m2);
-        this.app.getRootNode().attachChild(planet2);
+        sunMaterial = new Material (this.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+        sunMaterial.setColor("GlowColor",ColorRGBA.Orange);
+        //sunMaterial.setColor("Color", ColorRGBA.Orange);
+        sun.setMaterial(sunMaterial);
+        this.app.getRootNode().attachChild(sun);
 
         //3
         planet3 = this.app.getAssetManager().loadModel("Models/planet3.j3o" );
-        planet3.setLocalTranslation(6,0,7);
+        planet3.setLocalTranslation(-5,0,13);
+        planet3.setLocalScale(0.5f);
         //m = new Material (this.app.getAssetManager(), "Models/Material.001.material");
         m3 = new Material (this.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
         m3.setColor("Color", ColorRGBA.Green);

@@ -12,7 +12,7 @@ public class MyStateManager {
     static SkyAppState skyAppState ;
     static UIAppState uiAppState;
     static CameraAppState cameraAppState;
-    static ForTestAppState forTestAppState;
+    static PlanetAppState planetAppState;
     static LightAppState lightAppState;
 
 
@@ -22,7 +22,7 @@ public class MyStateManager {
         uiAppState = new UIAppState();
         skyAppState = new SkyAppState();
         cameraAppState = new CameraAppState();
-        forTestAppState = new ForTestAppState();
+        planetAppState = new PlanetAppState();
         lightAppState = new LightAppState();
     }
 
@@ -48,7 +48,7 @@ public class MyStateManager {
 
     public static void addCamera() { application.getStateManager().attach(cameraAppState); }
 
-    public static void forTest() { application.getStateManager().attach(forTestAppState); }
+    public static void addPlanet() { application.getStateManager().attach(planetAppState); }
 
     public static void addLight() { application.getStateManager().attach(lightAppState); }
 }

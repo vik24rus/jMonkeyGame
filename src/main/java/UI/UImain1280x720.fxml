@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.UImainController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.UImainController">
    <children>
-      <Pane layoutY="-5.0" prefHeight="36.0" prefWidth="800.0" style="-fx-background-color: Gray;">
+      <Pane layoutY="-5.0" prefHeight="36.0" prefWidth="1280.0" style="-fx-background-color: Gray;">
          <children>
             <ToolBar centerShape="false" focusTraversable="false" layoutY="1.0" prefHeight="35.0" prefWidth="190.0">
               <items>
@@ -23,8 +23,8 @@
             </ToolBar>
          </children>
       </Pane>
-      <TreeTableView fx:id="overview" layoutX="14.0" layoutY="38.0" prefHeight="244.0" prefWidth="232.0" style="\\: gray;" />
-      <TabPane layoutX="454.0" layoutY="344.0" prefHeight="244.0" prefWidth="332.0">
+      <TreeTableView fx:id="overview" layoutX="14.0" layoutY="39.0" prefHeight="244.0" prefWidth="232.0" style="\\: gray;" />
+      <TabPane layoutX="934.0" layoutY="462.0" prefHeight="244.0" prefWidth="332.0">
         <tabs>
           <Tab closable="false" text="System">
             <content>
@@ -57,7 +57,7 @@
             </Tab>
         </tabs>
       </TabPane>
-      <TitledPane fx:id="info_panel" animated="false" layoutX="554.0" layoutY="38.0" prefHeight="244.0" prefWidth="232.0" text="INFO">
+      <TitledPane fx:id="info_panel" animated="false" layoutX="1034.0" layoutY="39.0" prefHeight="244.0" prefWidth="232.0" text="INFO">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>

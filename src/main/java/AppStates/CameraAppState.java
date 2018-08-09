@@ -24,7 +24,7 @@ public class CameraAppState extends BaseAppState {
         cameranode = new CameraNode("Main Camera", app.getCamera());
         //cameranode.setControlDir(CameraControl.ControlDirection.SpatialToCamera); //??? WTF
         this.app.getRootNode().attachChild(cameranode);
-        cameranode.setLocalTranslation(-25,20,0);
+        cameranode.setLocalTranslation(-30,25,6);
         Quaternion q2 = new Quaternion();
         float angle_vertical = 45*FastMath.DEG_TO_RAD; //наклон
         float angle_turn = 90*FastMath.DEG_TO_RAD; //разворот
