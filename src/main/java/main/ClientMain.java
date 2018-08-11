@@ -5,14 +5,18 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.ClasspathLocator;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.material.Material;
-import com.jme3.math.*;
+
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.network.Network;
 import com.jme3.scene.Geometry;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.Node;
 import com.jme3.scene.debug.Arrow;
+import com.jme3.scene.shape.Line;
 import com.jme3.system.AppSettings;
 import java.io.IOException;
 import java.util.concurrent.Callable;
@@ -109,7 +113,6 @@ public class ClientMain extends SimpleApplication {
         }
         messageQueue = new ConcurrentLinkedQueue<String>() ;
         client.addMessageListener(new NetworkMessageListener());
-
     }
 
 

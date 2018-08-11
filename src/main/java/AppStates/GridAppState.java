@@ -3,7 +3,12 @@ package AppStates;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Line;
 import utils.Grid;
 
 public class GridAppState extends BaseAppState {
@@ -18,6 +23,15 @@ public class GridAppState extends BaseAppState {
         grid = new Grid(gridY , gridX, this.app);
         cells = new Spatial[gridY][gridX];
         cells = grid.getGrid();
+
+        //TODO рисование линий вместо модельки ячейки
+        Line line = new Line(new Vector3f(-20, 0, -20), new Vector3f(40, 0, 0));
+        line.setLineWidth(2);
+        Geometry geometry = new Geometry("Bullet", line);
+        Material orange = new Material(this.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+        orange.setColor("Color", ColorRGBA.Blue);
+        geometry.setMaterial(orange);
+        this.app.getRootNode().attachChild(geometry);
         //Технически безопасно выполнять всю инициализацию и очистку в методах
         //onEnable()/onDisable(). Выбор использовать initialize() и
         //cleanup() для этого, это вопрос специфики производительности для
